@@ -1,0 +1,96 @@
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <title>Ranking</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+            crossorigin="anonymous"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
+
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCFRg6eJ7rzzJUiucA0iKb0fztub3y7KGs",
+            authDomain: "da-maratona.firebaseapp.com",
+            databaseURL: "https://da-maratona.firebaseio.com",
+            projectId: "da-maratona",
+            storageBucket: "da-maratona.appspot.com",
+            messagingSenderId: "540810449848"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <script>
+
+        var tipoLog = [];
+        var pessoas = [];
+        var horario = [];
+        $(document).ready(function () {
+            const dbRefMat = firebase.database().ref().child('log');
+            dbRefMat.on('value', function (snap) {
+                tipoLog = [];
+                pessoas = [];
+                horario = [];
+                snap.forEach(function (child) {
+                    tipoLog.push(child.key);
+                    child.forEach(function (child) {
+                       pessoas.push(child.key);
+                    });
+
+                });
+                for(i=0; i<tipoLog.length; i++){
+                    $("#corpo").append("<tr id = \""+tipoLog[i] +"\">\n" +
+                        "<th class=\"log_pai\" scope=\"row\"><img style=\"cursor: pointer\" width=\"30\" src=\"imagens/add.png\">"+ tipoLog[i] +"</th> </tr>");
+                    
+                }
+                console.log()
+                console.log(tipoLog);
+                console.log(pessoas);
+            });
+        });
+
+    </script>
+
+
+    <style>
+        .main {
+            margin-top: 7%;
+            margin-left: 8%;
+            margin-right: 8%;
+            border-radius: initial;
+            border-style: solid;
+            border-color: white;
+        }
+
+        .log_user {
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+<div class="main">
+    <table class="table table-bordered">
+        <thead>
+        <tr style="text-align: center">
+            <th scope="col">Log</th>
+        </tr>
+        </thead>
+        <tbody id="corpo">
+    </table>
+</div>
+</body>
+
+</html>
